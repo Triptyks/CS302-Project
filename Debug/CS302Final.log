@@ -1,0 +1,5 @@
+﻿  lazyfoo.cpp
+lazyfoo.obj : error LNK2019: unresolved external symbol _IMG_Init referenced in function "bool __cdecl init(void)" (?init@@YA_NXZ)
+lazyfoo.obj : error LNK2019: unresolved external symbol _IMG_Quit referenced in function "void __cdecl close(void)" (?close@@YAXXZ)
+lazyfoo.obj : error LNK2019: unresolved external symbol _IMG_Load referenced in function "public: bool __thiscall LTexture::loadFromFile(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (?loadFromFile@LTexture@@QAE_NV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z)
+C:\Users\riley\source\repos\CS302Final\Debug\CS302Final.exe : fatal error LNK1120: 3 unresolved externals
