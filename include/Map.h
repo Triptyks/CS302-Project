@@ -1,6 +1,8 @@
 #pragma once
 #include "Game.h"
 
+// map represents a tileable background renderer, going to ignore this for not cause its not important for the game
+
 class Map
 {
 public:

@@ -1,6 +1,7 @@
 #pragma once
-
 #include "Game.h"
+
+// provides functions for handling textures
 
 class TextureManager
 {
