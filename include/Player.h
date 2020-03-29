@@ -1,7 +1,7 @@
 #pragma once
 #include "GameObject.h"
-#include "Bullet.h"
-
+#include "Bullet.h" 
+#include <vector>
 // player class inherited from GameObject, adds some player specific functions
 class Player : public GameObject
 {
@@ -18,8 +18,12 @@ public:
 	void Shoot();
 	void Update();
 	void Render();
+	void takeDamage();
+	int getHealth();
+	void die();
 
 private:
+	int health = 100;
 	std::vector<Bullet*> bullets;
 	bool isShooting = false;
 };

@@ -1,5 +1,5 @@
 #include "Player.h"
-
+#include "Game.h"
 
 Player::~Player()
 {/*
@@ -10,11 +10,10 @@ Player::~Player()
 	*/
 }
 
-
 void Player::handleEvent(SDL_Event& e)
 {
 	//If a key was pressed
-	if (player == 0)
+	if (player == "blue")
 	{
 		if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
 		{
@@ -71,7 +70,7 @@ void Player::handleEvent(SDL_Event& e)
 void Player::Shoot()
 {
 
-	Bullet* newbullet = new Bullet("../Assets/bullet.png", xpos, ypos + 20,player);
+	Bullet* newbullet = new Bullet("../Assets/bullet.png", xpos, ypos + 20, player);
 	bullets.push_back(newbullet);
 }
 
@@ -82,17 +81,62 @@ void Player::Update()
 		x->Update();
 	}
 
+	std::cout << Game::redbarriers.size() << std::endl;
+	
+	for (auto x : Game::redbarriers)
+	{
+		std::cout << x.getHealth() << std::endl;
+	}
+	
 	xpos += xvel;
 	ypos += yvel;
-	srcRect.h = 25;
-	srcRect.w = 2;
+	srcRect.h = 100;
+	srcRect.w = 8;
 	srcRect.x = 0;
 	srcRect.y = 0;
 
 	destRect.x = xpos;
 	destRect.y = ypos;
-	destRect.w = srcRect.w * 2;
-	destRect.h = srcRect.h * 2;
+	destRect.w = srcRect.w;
+	destRect.h = srcRect.h;
+
+
+	if (player == "blue")
+	{
+		Game::blueHit = destRect;
+	}
+	else
+	{
+		Game::redHit = destRect;
+	}
+
+	if (Game::blueHealth == 0 && player == "blue")
+	{
+		xpos = 800 - 50;
+		ypos = 400 / 2 - 25;
+	}
+
+	if (Game::redHealth == 0 && player == "red")
+	{
+		xpos = 50;
+		ypos = 400 / 2 - 25;
+	}
+
+	for (auto x : Game::redbarriers)
+	{
+		if (SDL_HasIntersection(&x.getBox(), &destRect))
+		{
+			xpos -= xvel;
+		}
+	}
+
+	for (auto x : Game::bluebarriers)
+	{
+		if (SDL_HasIntersection(&x.getBox(), &destRect))
+		{
+			xpos -= xvel;
+		}
+	}
 }
 
 void Player::Render()
@@ -109,5 +153,24 @@ void Player::Render()
 	SDL_RenderCopy(Game::renderer, objTexture, &srcRect, &destRect);
 }
 
+void Player::takeDamage()
+{
+	std::cout << "health went from " << health << " to ";
+	health -=20;
+	std::cout << health << std::endl;
+}
+
+int Player::getHealth()
+{
+	return health;
+}
+
+void Player::die()
+{
+	xpos = 10000;
+	ypos = 10000;
+	destRect.x = xpos;
+	destRect.y = ypos;
+}
 
 

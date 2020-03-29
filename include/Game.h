@@ -5,6 +5,11 @@
 #include <iostream>
 #include <vector>
 
+#include "Player.h"
+#include "TextureManager.h"
+#include "Map.h"
+
+
 // the Game class holds everything actually present in the game loop
 class Game
 {
@@ -33,6 +38,15 @@ class Game
 
 		// allows our renderer to be accesible to all objects inside the Game class
 		static SDL_Renderer* renderer;
+		
+		static SDL_Rect redHit;
+		static SDL_Rect blueHit;
+
+		static int redHealth;
+		static int blueHealth;
+
+		static std::vector<Player> redbarriers;
+		static std::vector<Player> bluebarriers;
 
 	private:
 		// counts frames 
@@ -43,4 +57,7 @@ class Game
 
 		// the window our Game renders to
 		SDL_Window* window;
+
+		
+
 };

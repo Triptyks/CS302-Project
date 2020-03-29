@@ -1,14 +1,20 @@
 #include "Game.h"
-#include "TextureManager.h"
-#include "GameObject.h"
-#include "Map.h"
-#include "Player.h"
 
 // initializing the renderer, the map, and any other Player objects
 SDL_Renderer* Game::renderer = nullptr;
 Map* map = nullptr;
-Player* playerone = nullptr;
-Player* playertwo = nullptr;
+Player* red = nullptr;
+Player* blue = nullptr;
+
+SDL_Rect Game::blueHit;
+SDL_Rect Game::redHit;
+
+int Game::redHealth = 100;
+int Game::blueHealth = 100;
+
+std::vector<Player> Game::redbarriers;
+std::vector<Player> Game::bluebarriers;
+
 
 // currently empty constructor
 Game::Game()
@@ -48,8 +54,10 @@ void Game::initialize(const char* word, int xpos, int ypos, int width, int heigh
 	}
 
 	// actually assigning the values of the object entities declared earlier
-	playerone = new Player("../Assets/line.png", 50 , height/2 - 25, 1);
-	playertwo = new Player("../Assets/line.png", width - 50, height/2 - 25, 0);
+	red = new Player("../Assets/pone.png", 50 , height/2 - 25, "red");
+	blue = new Player("../Assets/ptwo.png", width - 50, height/2 - 25, "blue");
+	//SDL_Rect Game::p0Hit = playerone->getBox();
+	//SDL_Rect Game::p1Hit = playertwo->getBox();
 	map = new Map();
 }
 
@@ -67,16 +75,49 @@ void Game::handleEvents()
 		}
 
 		//Handle input for the dot
-		playerone->handleEvent(event);
-		playertwo->handleEvent(event);
+		red->handleEvent(event);
+		blue->handleEvent(event);
 	}
 }
 
 // when update is called, we then call the update function of every object within our Game that needs to be updated
 void Game::update()
 {
-	playerone->Update();
-	playertwo->Update();
+	red->Update();
+
+	if (redHealth == 0)
+	{
+		std::cout << "left rectangle died" << std::endl;
+		Player barrier = *red;
+		redbarriers.push_back(barrier);
+		redHealth = 100;
+	}
+
+	blue->Update();
+
+	if (blueHealth == 0)
+	{
+		Player barrier = *blue;
+		bluebarriers.push_back(barrier);
+		std::cout << "right rectangle died" << std::endl;
+		blueHealth = 100;
+	}
+
+	for (auto& x : redbarriers)
+	{
+		if (x.getHealth() == 0)
+		{
+			x.die();
+		}
+	}
+
+	for (auto& x : bluebarriers)
+	{
+		if (x.getHealth() == 0)
+		{
+			x.die();
+		}
+	}
 }
 
 // render sets up other objects to be rendered , and then calls the render function of other objects
@@ -84,8 +125,19 @@ void Game::render()
 {
 	SDL_RenderClear(renderer);
 	map->DrawMap();
-	playerone->Render();
-	playertwo->Render();
+	red->Render();
+	blue->Render();
+
+	for (auto x : redbarriers)
+	{
+		x.Render();
+	}
+
+	for (auto x : bluebarriers)
+	{
+		x.Render();
+	}
+
 	SDL_RenderPresent(renderer);
 }
 
@@ -93,8 +145,8 @@ void Game::render()
 void Game::clean()
 {
 	delete map;
-	delete playerone;
-	delete playertwo;
+	delete red;
+	delete blue;
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();

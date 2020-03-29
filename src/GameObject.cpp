@@ -2,7 +2,7 @@
 #include "TextureManager.h"
 
 // initializes the GameObject's texture, positions, and velocities
-GameObject::GameObject(const char* texturesheet, int x, int y, int playernum)
+GameObject::GameObject(const char* texturesheet, int x, int y, std::string pcolor)
 {
 	objTexture = TextureManager::LoadTexture(texturesheet);
 	xpos = x;
@@ -11,7 +11,7 @@ GameObject::GameObject(const char* texturesheet, int x, int y, int playernum)
 	xvel = 0;
 	yvel = 0;
 
-	player = playernum;
+	player = pcolor;
 }
 
 // currently empty destructor
@@ -44,4 +44,9 @@ void GameObject::Render()
 	// the source rectangle defines what portion of our image texture we render from
 	// the destination rectangle defines where the texture taken from the source rectangle is rendered to 
 	SDL_RenderCopy(Game::renderer, objTexture, &srcRect, &destRect);
+}
+
+SDL_Rect GameObject::getBox()
+{
+	return destRect;
 }
