@@ -1,6 +1,7 @@
 #include "Game.h"
 
-// where the actual game loop is handled
+// Main Loop for actally running the game
+// this .cpp should probably never need to be changed, unless changing window information
 Game* game = nullptr;
 
 int main(int argc, char *argv[])

@@ -21,7 +21,7 @@ GameObject::~GameObject()
 }
 
 
-// called to update the object's positions and it's rendering rectangle's position, currently moves 1 x and 1 y per frame
+// called to update the object's positions and it's rendering rectangle's position
 void GameObject::Update()
 {
 	xpos += xvel;
@@ -51,9 +51,7 @@ SDL_Rect GameObject::getBox()
 	return destRect;
 }
 
-
-
-// returns flags to their spawn positions
+// returns flags to their spawn positions, later will use objects stored "spawn" points
 void GameObject::alive()
 {
 	if (player == "red")

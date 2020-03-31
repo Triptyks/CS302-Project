@@ -1,23 +1,24 @@
 #include "Player.h"
 #include "Game.h"
 
+// destructor deletes the vector of Bullet pointers 
 Player::~Player()
-{/*
+{
 	for (auto x : bullets)
 	{
 		delete x;
 	}
-	*/
 }
 
 void Player::handleEvent(SDL_Event& e)
 {
-	//If a key was pressed
+	//handles events for the ble player
 	if (player == "blue")
 	{
+		// if key press down
 		if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
 		{
-			//Adjust the velocity
+			//handles direction velocity and shoot
 			switch (e.key.keysym.sym)
 			{
 			case SDLK_UP: yvel -= 3; break;
@@ -27,9 +28,9 @@ void Player::handleEvent(SDL_Event& e)
 			case SDLK_PERIOD: Shoot(); break;
 			}
 		}
+		// if key release
 		else if (e.type == SDL_KEYUP && e.key.repeat == 0)
 		{
-			//Adjust the velocity
 			switch (e.key.keysym.sym)
 			{
 			case SDLK_UP: yvel += 3; break;
@@ -39,6 +40,7 @@ void Player::handleEvent(SDL_Event& e)
 			}
 		}
 	}
+	// same as above but different controls for red
 	else
 	{
 		if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
@@ -67,6 +69,7 @@ void Player::handleEvent(SDL_Event& e)
 	}
 }
 
+// shoot creates a new bullet
 void Player::Shoot()
 {
 
@@ -74,13 +77,16 @@ void Player::Shoot()
 	bullets.push_back(newbullet);
 }
 
+// all updates needed for the player
 void Player::Update()
 {
+	// updating the position of all bullets that belong to the player
 	for (auto x : bullets)
 	{
 		x->Update();
 	}
 
+	// position change from input and SDL_Rect stuff
 	xpos += xvel;
 	ypos += yvel;
 	srcRect.h = 100;
@@ -94,6 +100,7 @@ void Player::Update()
 	destRect.h = srcRect.h;
 
 
+	// updating the global hitboxes for red and blue
 	if (player == "blue")
 	{
 		Game::blueHit = destRect;
@@ -103,12 +110,14 @@ void Player::Update()
 		Game::redHit = destRect;
 	}
 
+	// if the blue's health is 0, we set it to default state and respawn it
 	if (Game::blueHealth == 0 && player == "blue")
 	{
 		objTexture = TextureManager::LoadTexture("../Assets/ptwo.png");
 		xpos = 800 - 108;
 		ypos = 400 / 2 - 55;
 
+		// if the player died with flag, respawn the flag, later can make to drop on death location
 		if (hasFlag == true)
 		{
 			Game::redflag->alive();
@@ -116,12 +125,14 @@ void Player::Update()
 		}
 	}
 
+	// if red dies, default state and respawn red
 	if (Game::redHealth == 0 && player == "red")
 	{
 		objTexture = TextureManager::LoadTexture("../Assets/pone.png");
 		xpos = 100;
 		ypos = 400 / 2 - 55;
 		
+		// returns flag if red dies with it
 		if (hasFlag == true)
 		{
 			Game::blueflag->alive();
@@ -129,6 +140,7 @@ void Player::Update()
 		}
 	}
 
+	// checks if collision needs to be applied and applies it with -xvel;
 	for (auto x : Game::redbarriers)
 	{
 		if (SDL_HasIntersection(&x.getBox(), &destRect))
@@ -137,6 +149,7 @@ void Player::Update()
 		}
 	}
 
+	// same but for blue barriers
 	for (auto x : Game::bluebarriers)
 	{
 		if (SDL_HasIntersection(&x.getBox(), &destRect))
@@ -145,7 +158,7 @@ void Player::Update()
 		}
 	}
 
-	// if red goes over blue flag
+	// if red goes over blue flag, pick it up and change to flag carrying texture
 	if (SDL_HasIntersection(&Game::blueflag->getBox(), &destRect) && player == "red")
 	{
 		Game::blueflag->die();
@@ -153,7 +166,7 @@ void Player::Update()
 		hasFlag = true;
 	}
 
-	// if red caps the blue flag
+	// if red caps the blue flag, respawn blue flag, set original texture, and increment poitns
 	if (SDL_HasIntersection(&Game::redflag->getBox(), &destRect) && player == "red" && hasFlag == true)
 	{
 		Game::blueflag->alive();
@@ -163,7 +176,7 @@ void Player::Update()
 		std::cout << "Red scored, red now has" << points << " points. "  << std::endl;
 	}
 
-	// if blue goes over red flag
+	// if blue goes over red flag, pick it up and change to flag carrying texture
 	if (SDL_HasIntersection(&Game::redflag->getBox(), &destRect) && player == "blue")
 	{
 		Game::redflag->die();
@@ -171,7 +184,7 @@ void Player::Update()
 		hasFlag = true;
 	}
 
-	// if blue caps red flag
+	// if blue caps the red flag, respawn blue flag, set original texture, and increment poitns
 	if (SDL_HasIntersection(&Game::blueflag->getBox(), &destRect) && player == "blue" && hasFlag == true)
 	{
 		Game::redflag->alive();
@@ -185,7 +198,7 @@ void Player::Update()
 
 void Player::Render()
 {
-
+	// renders every bullet belonging to the player
 	for (auto x : bullets)
 	{
 		x->Render();
@@ -197,6 +210,7 @@ void Player::Render()
 	SDL_RenderCopy(Game::renderer, objTexture, &srcRect, &destRect);
 }
 
+// called when player is hit by bullet
 void Player::takeDamage()
 {
 	std::cout << "health went from " << health << " to ";
@@ -204,19 +218,11 @@ void Player::takeDamage()
 	std::cout << health << std::endl;
 }
 
+// returns player health
 int Player::getHealth()
 {
 	return health;
 }
 
-/*
-void Player::die()
-{
-	xpos = 10000;
-	ypos = 10000;
-	destRect.x = xpos;
-	destRect.y = ypos;
-}
-*/
 
 

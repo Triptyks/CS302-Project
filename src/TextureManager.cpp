@@ -1,5 +1,6 @@
 #include "TextureManager.h"
 
+// given a path, loads that texture onto a surface and returns it 
 SDL_Texture* TextureManager::LoadTexture(const char* filename)
 {
 	SDL_Surface* tempSurface = IMG_Load(filename);

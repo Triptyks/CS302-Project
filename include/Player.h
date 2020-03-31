@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Bullet.h" 
 #include <vector>
+
 // player class inherited from GameObject, adds some player specific functions
 class Player : public GameObject
 {
@@ -15,14 +16,23 @@ public:
 	// handles events specific to the Player
 	void handleEvent(SDL_Event& e);
 
-	void Shoot();
+	// redefining GameObject functions to do specific things for a player
 	void Update();
 	void Render();
+
+	// shoot is called to fire a bullet
+	void Shoot(); 
+
+	// subtracts health by 25
 	void takeDamage();
+
+	// returns health
 	int getHealth();
+
+	// convert to private later
 	bool hasFlag = false;
 	int points = 0;
-	//void die();
+	
 
 private:
 	

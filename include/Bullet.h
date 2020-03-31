@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 
+// bullet inherited from GameObject
 class Bullet : public GameObject
 {
 public:
@@ -9,6 +10,5 @@ public:
 	void Update();
 
 private:
-	//int travelled = 0;
 };
 

@@ -9,18 +9,25 @@ class GameObject
 {
 
 public:
-	// constructor takes the objects texture and the coordinates to render the object to
+	// constructor takes the objects texture, coordinates to render the object to, and its color
 	GameObject(const char* texturesheet, int x, int y, std::string pcolor);
 	~GameObject();
 
 	// update and render functions
 	void Update();
 	void Render();
+
+	// returns an SDL_Rect, usually for collision testing
 	SDL_Rect getBox();
+
+	// returns object to spawn, currently only use on the flags, will fix later
 	void alive();
+
+	// sends object to very far away coordinates off screen
 	void die();
 
 protected:
+	// x position, y position, x velocity, y velocity
 	int xpos,ypos;
 	int xvel,yvel;
 	std::string player;
@@ -29,9 +36,6 @@ protected:
 	SDL_Texture* objTexture;
 	SDL_Rect srcRect, destRect;
 
-	
-	
-	//SDL_Renderer* renderer;
 };
 
 

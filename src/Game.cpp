@@ -54,7 +54,7 @@ void Game::initialize(const char* word, int xpos, int ypos, int width, int heigh
 		isRunning = true;
 	}
 
-	// actually assigning the values of the object entities declared earlier
+	// constructor for all main rendered objects
 	red = new Player("../Assets/pone.png", 100 , height/2 - 55, "red");
 	blue = new Player("../Assets/ptwo.png", width - 108, height/2 - 55, "blue");
 	redflag = new GameObject("../Assets/redflag.png", 15, height / 2 - 25, "red");
@@ -76,7 +76,7 @@ void Game::handleEvents()
 			isRunning = false;
 		}
 
-		//Handle input for the dot
+		//Handle input for the players
 		red->handleEvent(event);
 		blue->handleEvent(event);
 	}
@@ -85,8 +85,10 @@ void Game::handleEvents()
 // when update is called, we then call the update function of every object within our Game that needs to be updated
 void Game::update()
 {
+	// update red
 	red->Update();
 
+	// if red dies, spawn a barrier on its death location and push it to the vector of red barriers
 	if (redHealth == 0)
 	{
 		std::cout << "left rectangle died" << std::endl;
@@ -95,8 +97,10 @@ void Game::update()
 		redHealth = 100;
 	}
 
+	//update blue
 	blue->Update();
 
+	// if blue dies, spawn a barrier on its death location and push it to the vector of blue barriers
 	if (blueHealth == 0)
 	{
 		Player barrier = *blue;
@@ -105,6 +109,7 @@ void Game::update()
 		blueHealth = 100;
 	}
 
+	// iterate through all red barriers and destroy if their health is 0
 	for (auto& x : redbarriers)
 	{
 		if (x.getHealth() == 0)
@@ -113,6 +118,7 @@ void Game::update()
 		}
 	}
 
+	// iterate through all red barriers and destroy if their health is 0
 	for (auto& x : bluebarriers)
 	{
 		if (x.getHealth() == 0)
@@ -121,6 +127,7 @@ void Game::update()
 		}
 	}
 
+	// update state of flags
 	blueflag->Update();
 	redflag->Update();
 }
@@ -128,7 +135,9 @@ void Game::update()
 // render sets up other objects to be rendered , and then calls the render function of other objects
 void Game::render()
 {
+	// pre render call
 	SDL_RenderClear(renderer);
+
 	map->DrawMap();
 	redflag->Render();
 	blueflag->Render();
@@ -145,6 +154,7 @@ void Game::render()
 		x.Render();
 	}
 
+	// post render call
 	SDL_RenderPresent(renderer);
 }
 

@@ -1,7 +1,7 @@
 #pragma once
 #include "Game.h"
 
-// map represents a tileable background renderer, going to ignore this for not cause its not important for the game
+// might remove this class, not sure yet. should never need to be interacted with
 
 class Map
 {

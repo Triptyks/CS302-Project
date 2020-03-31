@@ -18,11 +18,10 @@ class Game
 		Game();
 		~Game();
 
-
-		// initialize creates the renderer, the window we render to, and creates high scoped GameObjects
+		// initialize creates the renderer, the window we render to, and any GameObjects
 		void initialize(const char* word, int xpos, int ypos, int width, int height, bool fullscreen);
 
-		// currently handles the input for x'ing out of the window
+		// handles inputs
 		void handleEvents();
 
 		// called to update the state of everyting inside Game
@@ -40,15 +39,19 @@ class Game
 		// allows our renderer to be accesible to all objects inside the Game class
 		static SDL_Renderer* renderer;
 		
+		// provides global access to the hitboxes of the players
 		static SDL_Rect redHit;
 		static SDL_Rect blueHit;
 
+		// provides global access for player health, can fix later 
 		static int redHealth;
 		static int blueHealth;
 
+		// provides global access to all barriers
 		static std::vector<Player> redbarriers;
 		static std::vector<Player> bluebarriers;
 
+		// provides global access to red and blue flags
 		static GameObject* redflag;
 		static GameObject* blueflag;
 

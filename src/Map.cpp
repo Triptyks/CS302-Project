@@ -1,6 +1,7 @@
 #include "Map.h"
 #include "TextureManager.h"
 
+// array of tiles
 int lvl1[20][25] = {
 	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -47,6 +48,7 @@ Map::~Map()
 {
 }
 
+// load from array into map
 void Map::LoadMap(int arr[20][25])
 {
 	for (int row = 0; row < 20; row++)
@@ -58,6 +60,7 @@ void Map::LoadMap(int arr[20][25])
 	}
 }
 
+// render each tile of our array 
 void Map::DrawMap()
 {
 	int type = 0;
