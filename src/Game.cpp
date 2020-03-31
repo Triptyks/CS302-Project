@@ -5,6 +5,8 @@ SDL_Renderer* Game::renderer = nullptr;
 Map* map = nullptr;
 Player* red = nullptr;
 Player* blue = nullptr;
+GameObject* Game::redflag = nullptr;
+GameObject* Game::blueflag = nullptr;
 
 SDL_Rect Game::blueHit;
 SDL_Rect Game::redHit;
@@ -14,7 +16,6 @@ int Game::blueHealth = 100;
 
 std::vector<Player> Game::redbarriers;
 std::vector<Player> Game::bluebarriers;
-
 
 // currently empty constructor
 Game::Game()
@@ -54,10 +55,11 @@ void Game::initialize(const char* word, int xpos, int ypos, int width, int heigh
 	}
 
 	// actually assigning the values of the object entities declared earlier
-	red = new Player("../Assets/pone.png", 50 , height/2 - 25, "red");
-	blue = new Player("../Assets/ptwo.png", width - 50, height/2 - 25, "blue");
-	//SDL_Rect Game::p0Hit = playerone->getBox();
-	//SDL_Rect Game::p1Hit = playertwo->getBox();
+	red = new Player("../Assets/pone.png", 100 , height/2 - 55, "red");
+	blue = new Player("../Assets/ptwo.png", width - 108, height/2 - 55, "blue");
+	redflag = new GameObject("../Assets/redflag.png", 15, height / 2 - 25, "red");
+	blueflag = new GameObject("../Assets/blueflag.png", width - 50, height / 2 - 25, "blue");
+	
 	map = new Map();
 }
 
@@ -118,6 +120,9 @@ void Game::update()
 			x.die();
 		}
 	}
+
+	blueflag->Update();
+	redflag->Update();
 }
 
 // render sets up other objects to be rendered , and then calls the render function of other objects
@@ -125,6 +130,8 @@ void Game::render()
 {
 	SDL_RenderClear(renderer);
 	map->DrawMap();
+	redflag->Render();
+	blueflag->Render();
 	red->Render();
 	blue->Render();
 
@@ -147,6 +154,8 @@ void Game::clean()
 	delete map;
 	delete red;
 	delete blue;
+	delete redflag;
+	delete blueflag;
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();

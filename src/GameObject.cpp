@@ -33,8 +33,8 @@ void GameObject::Update()
 
 	destRect.x = xpos;
 	destRect.y = ypos;
-	destRect.w = srcRect.w * 2;
-	destRect.h = srcRect.h * 2;
+	destRect.w = srcRect.w;
+	destRect.h = srcRect.h;
 }
 
 // called to render the object using render copy
@@ -49,4 +49,34 @@ void GameObject::Render()
 SDL_Rect GameObject::getBox()
 {
 	return destRect;
+}
+
+
+
+// returns flags to their spawn positions
+void GameObject::alive()
+{
+	if (player == "red")
+	{
+		xpos = 15;
+		ypos = 400 /2 - 25;
+		
+	}
+	else
+	{
+		xpos = 800 - 50;
+		ypos = 400 /2 - 25;
+	}
+
+	destRect.x = xpos;
+	destRect.y = ypos;
+}
+
+
+void GameObject::die()
+{
+	xpos = 10000;
+	ypos = 10000;
+	destRect.x = xpos;
+	destRect.y = ypos;
 }

@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 
+#include "GameObject.h"
 #include "Player.h"
 #include "TextureManager.h"
 #include "Map.h"
@@ -47,6 +48,9 @@ class Game
 
 		static std::vector<Player> redbarriers;
 		static std::vector<Player> bluebarriers;
+
+		static GameObject* redflag;
+		static GameObject* blueflag;
 
 	private:
 		// counts frames 

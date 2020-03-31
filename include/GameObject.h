@@ -17,6 +17,8 @@ public:
 	void Update();
 	void Render();
 	SDL_Rect getBox();
+	void alive();
+	void die();
 
 protected:
 	int xpos,ypos;

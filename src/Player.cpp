@@ -81,13 +81,6 @@ void Player::Update()
 		x->Update();
 	}
 
-	std::cout << Game::redbarriers.size() << std::endl;
-	
-	for (auto x : Game::redbarriers)
-	{
-		std::cout << x.getHealth() << std::endl;
-	}
-	
 	xpos += xvel;
 	ypos += yvel;
 	srcRect.h = 100;
@@ -112,14 +105,28 @@ void Player::Update()
 
 	if (Game::blueHealth == 0 && player == "blue")
 	{
-		xpos = 800 - 50;
-		ypos = 400 / 2 - 25;
+		objTexture = TextureManager::LoadTexture("../Assets/ptwo.png");
+		xpos = 800 - 108;
+		ypos = 400 / 2 - 55;
+
+		if (hasFlag == true)
+		{
+			Game::redflag->alive();
+			hasFlag = false;
+		}
 	}
 
 	if (Game::redHealth == 0 && player == "red")
 	{
-		xpos = 50;
-		ypos = 400 / 2 - 25;
+		objTexture = TextureManager::LoadTexture("../Assets/pone.png");
+		xpos = 100;
+		ypos = 400 / 2 - 55;
+		
+		if (hasFlag == true)
+		{
+			Game::blueflag->alive();
+			hasFlag = false;
+		}
 	}
 
 	for (auto x : Game::redbarriers)
@@ -137,7 +144,44 @@ void Player::Update()
 			xpos -= xvel;
 		}
 	}
+
+	// if red goes over blue flag
+	if (SDL_HasIntersection(&Game::blueflag->getBox(), &destRect) && player == "red")
+	{
+		Game::blueflag->die();
+		objTexture = TextureManager::LoadTexture("../Assets/poneflag.png");
+		hasFlag = true;
+	}
+
+	// if red caps the blue flag
+	if (SDL_HasIntersection(&Game::redflag->getBox(), &destRect) && player == "red" && hasFlag == true)
+	{
+		Game::blueflag->alive();
+		objTexture = TextureManager::LoadTexture("../Assets/pone.png");
+		hasFlag = false;
+		points++;
+		std::cout << "Red scored, red now has" << points << " points. "  << std::endl;
+	}
+
+	// if blue goes over red flag
+	if (SDL_HasIntersection(&Game::redflag->getBox(), &destRect) && player == "blue")
+	{
+		Game::redflag->die();
+		objTexture = TextureManager::LoadTexture("../Assets/ptwoflag.png");
+		hasFlag = true;
+	}
+
+	// if blue caps red flag
+	if (SDL_HasIntersection(&Game::blueflag->getBox(), &destRect) && player == "blue" && hasFlag == true)
+	{
+		Game::redflag->alive();
+		objTexture = TextureManager::LoadTexture("../Assets/ptwo.png");
+		hasFlag = false;
+		points++;
+		std::cout << "Blue scored, blue now has" << points << " points. " << std::endl;
+	}
 }
+
 
 void Player::Render()
 {
@@ -165,6 +209,7 @@ int Player::getHealth()
 	return health;
 }
 
+/*
 void Player::die()
 {
 	xpos = 10000;
@@ -172,5 +217,6 @@ void Player::die()
 	destRect.x = xpos;
 	destRect.y = ypos;
 }
+*/
 
 

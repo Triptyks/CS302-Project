@@ -20,9 +20,12 @@ public:
 	void Render();
 	void takeDamage();
 	int getHealth();
-	void die();
+	bool hasFlag = false;
+	int points = 0;
+	//void die();
 
 private:
+	
 	int health = 100;
 	std::vector<Bullet*> bullets;
 	bool isShooting = false;
