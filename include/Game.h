@@ -34,7 +34,7 @@ class Game
 		void clean();
 
 		// returns isRunning
-		bool running();
+		int running();
 
 		// allows our renderer to be accesible to all objects inside the Game class
 		static SDL_Renderer* renderer;
@@ -55,12 +55,18 @@ class Game
 		static GameObject* redflag;
 		static GameObject* blueflag;
 
+		static int bluescore;
+		static int redscore;
+
+		static GameObject* redbase;
+		static GameObject* bluebase;
+
 	private:
 		// counts frames 
 		int counter = 0;
-
+		SDL_Texture* scorerender;
 		// whether or not the game is running, set to false to exit
-		bool isRunning;
+		int isRunning;
 
 		// the window our Game renders to
 		SDL_Window* window;

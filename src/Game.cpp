@@ -7,6 +7,8 @@ Player* red = nullptr;
 Player* blue = nullptr;
 GameObject* Game::redflag = nullptr;
 GameObject* Game::blueflag = nullptr;
+GameObject* Game::redbase = nullptr;
+GameObject* Game::bluebase = nullptr;
 
 SDL_Rect Game::blueHit;
 SDL_Rect Game::redHit;
@@ -17,9 +19,27 @@ int Game::blueHealth = 100;
 std::vector<Player> Game::redbarriers;
 std::vector<Player> Game::bluebarriers;
 
+
+int Game::bluescore = 0;
+
+int Game::redscore = 0;
+//trying to mess with showing score
+ 
+
+
+
+
+
+
+
+
+
+
 // currently empty constructor
 Game::Game()
-{}
+{
+	isRunning = 0;
+}
 
 // currently empty destructor 
 Game::~Game()
@@ -51,14 +71,17 @@ void Game::initialize(const char* word, int xpos, int ypos, int width, int heigh
 			std::cout << "Renderer created" << std::endl;
 		}
 
-		isRunning = true;
+		isRunning = 0;
 	}
 
 	// constructor for all main rendered objects
-	red = new Player("../Assets/pone.png", 100 , height/2 - 55, "red");
-	blue = new Player("../Assets/ptwo.png", width - 108, height/2 - 55, "blue");
-	redflag = new GameObject("../Assets/redflag.png", 15, height / 2 - 25, "red");
-	blueflag = new GameObject("../Assets/blueflag.png", width - 50, height / 2 - 25, "blue");
+	red = new Player("../Assets/pone.png", 100 , height/2 - 55, "red", 0);
+	blue = new Player("../Assets/ptwo.png", width - 108, height/2 - 55, "blue",0);
+	redflag = new GameObject("../Assets/redflag.png", 15, height / 2 - 25, "red",0);
+	blueflag = new GameObject("../Assets/blueflag.png", width - 60, height / 2 - 25, "blue",0);
+	redbase = new GameObject("../Assets/redbase.png", 15, height / 2 - 25, "red" , 0);
+	bluebase = new GameObject("../Assets/bluebase.png", width - 60, height / 2 - 25, "blue" , 0);
+
 	
 	map = new Map();
 }
@@ -73,7 +96,7 @@ void Game::handleEvents()
 		//User requests quit
 		if (event.type == SDL_QUIT)
 		{
-			isRunning = false;
+			isRunning = 2;
 		}
 
 		//Handle input for the players
@@ -109,10 +132,11 @@ void Game::update()
 		blueHealth = 100;
 	}
 
+
 	// iterate through all red barriers and destroy if their health is 0
 	for (auto& x : redbarriers)
 	{
-		if (x.getHealth() == 0)
+		if (x.getHealth() <= 0)
 		{
 			x.die();
 		}
@@ -121,15 +145,42 @@ void Game::update()
 	// iterate through all red barriers and destroy if their health is 0
 	for (auto& x : bluebarriers)
 	{
-		if (x.getHealth() == 0)
+		if (x.getHealth() <= 0)
 		{
 			x.die();
 		}
 	}
 
 	// update state of flags
+
+	redbase->Update();
+	bluebase->Update();
+
 	blueflag->Update();
 	redflag->Update();
+
+	if (redscore == 5 || bluescore == 5)
+	{
+		
+		red->reset();
+		blue->reset();
+
+		for (auto& x : redbarriers)
+		{
+			x.die();
+		}
+
+		redscore = 0;
+		bluescore = 0;
+
+		// iterate through all red barriers and destroy if their health is 0
+		for (auto& x : bluebarriers)
+		{
+			x.die();
+		}
+
+	}
+
 }
 
 // render sets up other objects to be rendered , and then calls the render function of other objects
@@ -139,8 +190,13 @@ void Game::render()
 	SDL_RenderClear(renderer);
 
 	map->DrawMap();
+
+	redbase->Render();
+	bluebase->Render();
+
 	redflag->Render();
 	blueflag->Render();
+
 	red->Render();
 	blue->Render();
 
@@ -166,6 +222,8 @@ void Game::clean()
 	delete blue;
 	delete redflag;
 	delete blueflag;
+	delete redbase;
+	delete bluebase;
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();
@@ -174,7 +232,7 @@ void Game::clean()
 }
 
 // returns running state
-bool Game::running()
+int Game::running()
 {
 	return isRunning;
 }

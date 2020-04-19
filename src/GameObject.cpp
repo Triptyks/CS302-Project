@@ -2,7 +2,7 @@
 #include "TextureManager.h"
 
 // initializes the GameObject's texture, positions, and velocities
-GameObject::GameObject(const char* texturesheet, int x, int y, std::string pcolor)
+GameObject::GameObject(const char* texturesheet, int x, int y, std::string pcolor, int velocity)
 {
 	objTexture = TextureManager::LoadTexture(texturesheet);
 	xpos = x;
@@ -12,6 +12,8 @@ GameObject::GameObject(const char* texturesheet, int x, int y, std::string pcolo
 	yvel = 0;
 
 	player = pcolor;
+
+	velo = velocity;
 }
 
 // currently empty destructor
@@ -26,8 +28,8 @@ void GameObject::Update()
 {
 	xpos += xvel;
 	ypos += yvel;
-	srcRect.h = 32;
-	srcRect.w = 32;
+	srcRect.h = 48;
+	srcRect.w = 48;
 	srcRect.x = 0;
 	srcRect.y = 0;
 
@@ -57,13 +59,13 @@ void GameObject::alive()
 	if (player == "red")
 	{
 		xpos = 15;
-		ypos = 400 /2 - 25;
+		ypos = 600 / 2 - 25;
 		
 	}
 	else
 	{
-		xpos = 800 - 50;
-		ypos = 400 /2 - 25;
+		xpos = 800 - 60;
+		ypos = 600 / 2 - 25;
 	}
 
 	destRect.x = xpos;

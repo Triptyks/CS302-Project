@@ -16,9 +16,17 @@ public:
 
 private:
 	SDL_Rect src, dest;
-	SDL_Texture* dirt;
-	SDL_Texture* grass;
-	SDL_Texture* water;
+	SDL_Texture* tile;
+	SDL_Texture* tile2;
+	SDL_Texture* tiledark;
+	SDL_Texture* tile2dark;
+
+	SDL_Texture* tilered;
+	SDL_Texture* tile2red;
+	SDL_Texture* tileblue;
+	SDL_Texture* tile2blue;
+
+
 
 	int map[20][25];
 

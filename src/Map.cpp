@@ -3,11 +3,11 @@
 
 // array of tiles
 int lvl1[20][25] = {
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+	{0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0},
+	{1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1},
+	{0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0},
+	{1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1},
+	{0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0},
 	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -27,9 +27,16 @@ int lvl1[20][25] = {
 
 Map::Map()
 {
-	dirt = TextureManager::LoadTexture("../Assets/tile.png");
-	grass = TextureManager::LoadTexture("../Assets/grass.png");
-	water = TextureManager::LoadTexture("../Assets/tile.png");
+	tile = TextureManager::LoadTexture("../Assets/tile.png");
+	tile2 = TextureManager::LoadTexture("../Assets/tile2.png");
+	tiledark = TextureManager::LoadTexture("../Assets/tiledark.png");
+	tile2dark = TextureManager::LoadTexture("../Assets/tile2dark.png");
+	
+	tilered = TextureManager::LoadTexture("../Assets/tilered.png");
+	tile2red = TextureManager::LoadTexture("../Assets/tile2red.png");
+	tileblue = TextureManager::LoadTexture("../Assets/tileblue.png");
+	tile2blue = TextureManager::LoadTexture("../Assets/tile2blue.png");
+
 
 	LoadMap(lvl1);
 
@@ -69,25 +76,127 @@ void Map::DrawMap()
 	{
 		for (int col = 0; col < 25; col++)
 		{
-			type = map[row][col];
 
 			dest.x = col * 32;
 			dest.y = row * 32;
 
-			switch (type)
+			if (row % 2 == 0)
 			{
-			case 0:
-				TextureManager::Draw(water, src, dest);
-				break;
-			case 1:
-				TextureManager::Draw(grass, src, dest);
-				break;
-			case 2:
-				TextureManager::Draw(dirt, src, dest);
-				break;
+				if (col % 2 == 0)
+				{
+					TextureManager::Draw(tile, src, dest);
 
-			default:
-				break;
+				}
+				else
+				{
+					TextureManager::Draw(tile2, src, dest);
+				}
+			}
+			else
+			{
+				if (col % 2 == 0)
+				{
+					TextureManager::Draw(tile2, src, dest);
+
+				}
+				else
+				{
+					TextureManager::Draw(tile, src, dest);
+				}
+			}
+
+
+
+			if (col > 9 && col < 15)
+			{
+				if (row % 2 == 0)
+				{
+					if (col % 2 == 0)
+					{
+						TextureManager::Draw(tiledark, src, dest);
+
+					}
+					else
+					{
+						TextureManager::Draw(tile2dark, src, dest);
+					}
+				}
+				else
+				{
+					if (col % 2 == 0)
+					{
+						TextureManager::Draw(tile2dark, src, dest);
+
+					}
+					else
+					{
+						TextureManager::Draw(tiledark, src, dest);
+					}
+				}
+			}
+
+			if (row > 6 && row < 12)
+			{
+				if (col < 5)
+				{
+
+
+					if (row % 2 == 0)
+					{
+						if (col % 2 == 0)
+						{
+							TextureManager::Draw(tilered, src, dest);
+
+						}
+						else
+						{
+							TextureManager::Draw(tile2red, src, dest);
+						}
+					}
+					else
+					{
+						if (col % 2 == 0)
+						{
+							TextureManager::Draw(tile2red, src, dest);
+
+						}
+						else
+						{
+							TextureManager::Draw(tilered, src, dest);
+						}
+					}
+				}
+
+				if (col > 19)
+				{
+
+					if (row % 2 == 0)
+					{
+						if (col % 2 == 0)
+						{
+							TextureManager::Draw(tileblue, src, dest);
+
+						}
+						else
+						{
+							TextureManager::Draw(tile2blue, src, dest);
+						}
+					}
+					else
+					{
+						if (col % 2 == 0)
+						{
+							TextureManager::Draw(tile2blue, src, dest);
+
+						}
+						else
+						{
+							TextureManager::Draw(tileblue, src, dest);
+						}
+					}
+				}
+
+				
 			}
 		}
 	}

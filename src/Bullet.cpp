@@ -5,28 +5,42 @@ void Bullet::Update()
 {
 	// bullets go right to left if you are red and left to right if you are blue
 	// later we want bullets to fire from your front as you rotate
-	if (player == "blue")
+
+	if (velo > 0)
+	{
+		xpos +=10;
+	}
+
+	else if(velo < 0)
 	{
 		xpos -= 10;
 	}
 	else
 	{
-		xpos += 10;
+		if (player == "red")
+		{
+			xpos += 10;
+		}
+		else
+		{
+			xpos -= 10;
+		}
+
 	}
 	ypos += 0;
 
 
 
 	// rectangle stuff
-	srcRect.h = 5;
-	srcRect.w = 5;
+	srcRect.h = 10;
+	srcRect.w = 10;
 	srcRect.x = 0;
 	srcRect.y = 0;
 
 	destRect.x = xpos;
 	destRect.y = ypos;
-	destRect.w = srcRect.w * 2;
-	destRect.h = srcRect.h * 2;
+	destRect.w = srcRect.w;
+	destRect.h = srcRect.h;
 
 
 	// if red is hit, we "delete" the bullet and subtract health
@@ -58,7 +72,7 @@ void Bullet::Update()
 			// if a red bullet hits a red barrier, subtract from barrier health and remove bullet
 			if (player == "red")
 			{
-				x.takeDamage();
+				x.takeDamage(34);
 				xpos = 10000;
 				ypos = 10000;
 				//die();
@@ -66,6 +80,7 @@ void Bullet::Update()
 			// if a red bullet hits a blue barrier, remove bullet only
 			else
 			{
+				x.takeDamage(20);
 				xpos = 10000;
 				ypos = 10000;
 				//die();
@@ -82,6 +97,7 @@ void Bullet::Update()
 			// if a blue bullet hits a red barrier, remove bullet only
 			if (player == "red")
 			{
+				x.takeDamage(20);
 				xpos = 10000;
 				ypos = 10000;
 				//die();
@@ -89,7 +105,7 @@ void Bullet::Update()
 			// if a blue bullet hits a blue barrier, subtract from barrier health and remove bullet
 			else
 			{
-				x.takeDamage();
+				x.takeDamage(34);
 				xpos = 10000;
 				ypos = 10000;
 				//die();

@@ -10,7 +10,7 @@ class GameObject
 
 public:
 	// constructor takes the objects texture, coordinates to render the object to, and its color
-	GameObject(const char* texturesheet, int x, int y, std::string pcolor);
+	GameObject(const char* texturesheet, int x, int y, std::string pcolor, int velocity);
 	~GameObject();
 
 	// update and render functions
@@ -26,11 +26,16 @@ public:
 	// sends object to very far away coordinates off screen
 	void die();
 
+
+	int xpos, ypos;
+	int xvel, yvel;
 protected:
 	// x position, y position, x velocity, y velocity
-	int xpos,ypos;
-	int xvel,yvel;
+
 	std::string player;
+
+	int velo;
+	int lastdir;
 
 	// the objects texture, and rendering Rectangles
 	SDL_Texture* objTexture;

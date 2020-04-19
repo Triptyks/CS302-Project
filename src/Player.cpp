@@ -21,23 +21,28 @@ void Player::handleEvent(SDL_Event& e)
 			//handles direction velocity and shoot
 			switch (e.key.keysym.sym)
 			{
-			case SDLK_UP: yvel -= 3; break;
-			case SDLK_DOWN: yvel += 3; break;
-			case SDLK_LEFT: xvel -= 3; break;
-			case SDLK_RIGHT: xvel += 3; break;
+			case SDLK_UP: yvel -= movevelocity; break;
+			case SDLK_DOWN: yvel += movevelocity; break;
+			case SDLK_LEFT: xvel -= movevelocity; break;
+			case SDLK_RIGHT: xvel += movevelocity; break;
 			case SDLK_PERIOD: Shoot(); break;
 			}
+
+			lastdir = velo;
 		}
 		// if key release
 		else if (e.type == SDL_KEYUP && e.key.repeat == 0)
 		{
+
 			switch (e.key.keysym.sym)
 			{
-			case SDLK_UP: yvel += 3; break;
-			case SDLK_DOWN: yvel -= 3; break;
-			case SDLK_LEFT: xvel += 3; break;
-			case SDLK_RIGHT: xvel -= 3; break;
+			case SDLK_UP: yvel += movevelocity; break;
+			case SDLK_DOWN: yvel -= movevelocity; break;
+			case SDLK_LEFT: xvel += movevelocity; break;
+			case SDLK_RIGHT: xvel -= movevelocity; break;
 			}
+
+			lastdir = velo;
 		}
 	}
 	// same as above but different controls for red
@@ -48,10 +53,10 @@ void Player::handleEvent(SDL_Event& e)
 			//Adjust the velocity
 			switch (e.key.keysym.sym)
 			{
-			case SDLK_w: yvel -= 3; break;
-			case SDLK_s: yvel += 3; break;
-			case SDLK_a: xvel -= 3; break;
-			case SDLK_d: xvel += 3; break;
+			case SDLK_w: yvel -= 4; break;
+			case SDLK_s: yvel += 4; break;
+			case SDLK_a: xvel -= 4; break;
+			case SDLK_d: xvel += 4; break;
 			case SDLK_c: Shoot(); break;
 			}
 		}
@@ -60,10 +65,10 @@ void Player::handleEvent(SDL_Event& e)
 			//Adjust the velocity
 			switch (e.key.keysym.sym)
 			{
-			case SDLK_w: yvel += 3; break;
-			case SDLK_s: yvel -= 3; break;
-			case SDLK_a: xvel += 3; break;
-			case SDLK_d: xvel -= 3; break;
+			case SDLK_w: yvel += 4; break;
+			case SDLK_s: yvel -= 4; break;
+			case SDLK_a: xvel += 4; break;
+			case SDLK_d: xvel -= 4; break;
 			}
 		}
 	}
@@ -72,8 +77,30 @@ void Player::handleEvent(SDL_Event& e)
 // shoot creates a new bullet
 void Player::Shoot()
 {
+	Bullet* newbullet;
 
-	Bullet* newbullet = new Bullet("../Assets/bullet.png", xpos, ypos + 20, player);
+	if (xvel > 0)
+	{
+		newbullet = new Bullet("../Assets/bullet.png", xpos + 10, ypos + 55, player, xvel);
+	}
+		
+	if (xvel == 0)
+	{
+		if (player == "red")
+		{
+			newbullet = new Bullet("../Assets/bullet.png", xpos + 10, ypos + 55, player, xvel);
+		}
+		else
+		{
+			newbullet = new Bullet("../Assets/bullet.png", xpos - 10, ypos + 55, player, xvel);
+		}
+	}
+	
+	if(xvel < 0)
+	{
+		 newbullet = new Bullet("../Assets/bullet.png", xpos - 10, ypos + 55, player, xvel);
+	}
+	
 	bullets.push_back(newbullet);
 }
 
@@ -89,8 +116,8 @@ void Player::Update()
 	// position change from input and SDL_Rect stuff
 	xpos += xvel;
 	ypos += yvel;
-	srcRect.h = 100;
-	srcRect.w = 8;
+	srcRect.h = 125;
+	srcRect.w = 10;
 	srcRect.x = 0;
 	srcRect.y = 0;
 
@@ -110,35 +137,17 @@ void Player::Update()
 		Game::redHit = destRect;
 	}
 
-	// if the blue's health is 0, we set it to default state and respawn it
+
 	if (Game::blueHealth == 0 && player == "blue")
 	{
-		objTexture = TextureManager::LoadTexture("../Assets/ptwo.png");
-		xpos = 800 - 108;
-		ypos = 400 / 2 - 55;
-
-		// if the player died with flag, respawn the flag, later can make to drop on death location
-		if (hasFlag == true)
-		{
-			Game::redflag->alive();
-			hasFlag = false;
-		}
+		reset();
 	}
 
-	// if red dies, default state and respawn red
 	if (Game::redHealth == 0 && player == "red")
 	{
-		objTexture = TextureManager::LoadTexture("../Assets/pone.png");
-		xpos = 100;
-		ypos = 400 / 2 - 55;
-		
-		// returns flag if red dies with it
-		if (hasFlag == true)
-		{
-			Game::blueflag->alive();
-			hasFlag = false;
-		}
+		reset();
 	}
+
 
 	// checks if collision needs to be applied and applies it with -xvel;
 	for (auto x : Game::redbarriers)
@@ -147,6 +156,7 @@ void Player::Update()
 		{
 			xpos -= xvel;
 		}
+
 	}
 
 	// same but for blue barriers
@@ -156,6 +166,8 @@ void Player::Update()
 		{
 			xpos -= xvel;
 		}
+
+
 	}
 
 	// if red goes over blue flag, pick it up and change to flag carrying texture
@@ -167,13 +179,14 @@ void Player::Update()
 	}
 
 	// if red caps the blue flag, respawn blue flag, set original texture, and increment poitns
-	if (SDL_HasIntersection(&Game::redflag->getBox(), &destRect) && player == "red" && hasFlag == true)
+	if (SDL_HasIntersection(&Game::redbase->getBox(), &destRect) && player == "red" && hasFlag == true)
 	{
 		Game::blueflag->alive();
 		objTexture = TextureManager::LoadTexture("../Assets/pone.png");
 		hasFlag = false;
 		points++;
-		std::cout << "Red scored, red now has" << points << " points. "  << std::endl;
+		std::cout << "Red scored, red now has " << Game::redscore << " points. "  << std::endl;
+		Game::redscore++;
 	}
 
 	// if blue goes over red flag, pick it up and change to flag carrying texture
@@ -185,13 +198,14 @@ void Player::Update()
 	}
 
 	// if blue caps the red flag, respawn blue flag, set original texture, and increment poitns
-	if (SDL_HasIntersection(&Game::blueflag->getBox(), &destRect) && player == "blue" && hasFlag == true)
+	if (SDL_HasIntersection(&Game::bluebase->getBox(), &destRect) && player == "blue" && hasFlag == true)
 	{
 		Game::redflag->alive();
 		objTexture = TextureManager::LoadTexture("../Assets/ptwo.png");
 		hasFlag = false;
 		points++;
-		std::cout << "Blue scored, blue now has" << points << " points. " << std::endl;
+		Game::bluescore++;
+		std::cout << "Blue scored, blue now has " << Game::bluescore << " points. " << std::endl;
 	}
 }
 
@@ -211,10 +225,10 @@ void Player::Render()
 }
 
 // called when player is hit by bullet
-void Player::takeDamage()
+void Player::takeDamage(int dmg)
 {
 	std::cout << "health went from " << health << " to ";
-	health -=20;
+	health -=dmg;
 	std::cout << health << std::endl;
 }
 
@@ -225,4 +239,38 @@ int Player::getHealth()
 }
 
 
+void Player::reset()
+{
+	// if the blue's health is 0, we set it to default state and respawn it
+	if (player == "blue")
+	{
+		bullets.clear();
+		objTexture = TextureManager::LoadTexture("../Assets/ptwo.png");
+		xpos = 800 - 108;
+		ypos = 600 / 2 - 55;
 
+		// if the player died with flag, respawn the flag, later can make to drop on death location
+		if (hasFlag == true)
+		{
+			Game::redflag->alive();
+			hasFlag = false;
+		}
+	}
+
+	// if red dies, default state and respawn red
+	if (player == "red")
+	{
+		bullets.clear();
+		objTexture = TextureManager::LoadTexture("../Assets/pone.png");
+		xpos = 100;
+		ypos = 600 / 2 - 55;
+
+		// returns flag if red dies with it
+		if (hasFlag == true)
+		{
+			Game::blueflag->alive();
+			hasFlag = false;
+		}
+	}
+
+}

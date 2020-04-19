@@ -24,7 +24,7 @@ public:
 	void Shoot(); 
 
 	// subtracts health by 25
-	void takeDamage();
+	void takeDamage(int dmg);
 
 	// returns health
 	int getHealth();
@@ -33,9 +33,10 @@ public:
 	bool hasFlag = false;
 	int points = 0;
 	
+	void reset();
 
 private:
-	
+	int movevelocity = 20;
 	int health = 100;
 	std::vector<Bullet*> bullets;
 	bool isShooting = false;
