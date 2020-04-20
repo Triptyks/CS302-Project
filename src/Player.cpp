@@ -53,10 +53,10 @@ void Player::handleEvent(SDL_Event& e)
 			//Adjust the velocity
 			switch (e.key.keysym.sym)
 			{
-			case SDLK_w: yvel -= 4; break;
-			case SDLK_s: yvel += 4; break;
-			case SDLK_a: xvel -= 4; break;
-			case SDLK_d: xvel += 4; break;
+			case SDLK_w: yvel -= movevelocity; break;
+			case SDLK_s: yvel += movevelocity; break;
+			case SDLK_a: xvel -= movevelocity; break;
+			case SDLK_d: xvel += movevelocity; break;
 			case SDLK_c: Shoot(); break;
 			}
 		}
@@ -65,10 +65,10 @@ void Player::handleEvent(SDL_Event& e)
 			//Adjust the velocity
 			switch (e.key.keysym.sym)
 			{
-			case SDLK_w: yvel += 4; break;
-			case SDLK_s: yvel -= 4; break;
-			case SDLK_a: xvel += 4; break;
-			case SDLK_d: xvel -= 4; break;
+			case SDLK_w: yvel += movevelocity; break;
+			case SDLK_s: yvel -= movevelocity; break;
+			case SDLK_a: xvel += movevelocity; break;
+			case SDLK_d: xvel -= movevelocity; break;
 			}
 		}
 	}
@@ -88,11 +88,11 @@ void Player::Shoot()
 	{
 		if (player == "red")
 		{
-			newbullet = new Bullet("../Assets/bullet.png", xpos + 10, ypos + 55, player, xvel);
+			newbullet = new Bullet("../Assets/bullet.png", xpos + 5, ypos + 55, player, xvel);
 		}
 		else
 		{
-			newbullet = new Bullet("../Assets/bullet.png", xpos - 10, ypos + 55, player, xvel);
+			newbullet = new Bullet("../Assets/bullet.png", xpos - 5, ypos + 55, player, xvel);
 		}
 	}
 	
@@ -115,7 +115,26 @@ void Player::Update()
 
 	// position change from input and SDL_Rect stuff
 	xpos += xvel;
+
+	//If the dot went too far to the left or right
+	if ((xpos < 0) || (xpos + 10 > 800))
+	{
+		//Move back
+		xpos -= xvel;
+	}
+
+
+
+
 	ypos += yvel;
+
+	//If the dot went too far to the left or right
+	if ((ypos < 0) || (ypos + 125 > 600))
+	{
+		//Move back
+		ypos -= yvel;
+	}
+
 	srcRect.h = 125;
 	srcRect.w = 10;
 	srcRect.x = 0;
@@ -126,7 +145,7 @@ void Player::Update()
 	destRect.w = srcRect.w;
 	destRect.h = srcRect.h;
 
-
+	
 	// updating the global hitboxes for red and blue
 	if (player == "blue")
 	{

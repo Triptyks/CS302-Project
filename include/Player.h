@@ -36,7 +36,7 @@ public:
 	void reset();
 
 private:
-	int movevelocity = 20;
+	int movevelocity = 5;
 	int health = 100;
 	std::vector<Bullet*> bullets;
 	bool isShooting = false;

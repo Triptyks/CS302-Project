@@ -115,8 +115,13 @@ void Game::update()
 	if (redHealth == 0)
 	{
 		std::cout << "left rectangle died" << std::endl;
+
+		red->objTexture = TextureManager::LoadTexture("../Assets/ponebarrier.png");
+
 		Player barrier = *red;
 		redbarriers.push_back(barrier);
+
+		red->objTexture = TextureManager::LoadTexture("../Assets/pone.png");
 		redHealth = 100;
 	}
 
@@ -126,10 +131,20 @@ void Game::update()
 	// if blue dies, spawn a barrier on its death location and push it to the vector of blue barriers
 	if (blueHealth == 0)
 	{
+
+
+		blue->objTexture = TextureManager::LoadTexture("../Assets/ptwobarrier.png");
+
 		Player barrier = *blue;
+
 		bluebarriers.push_back(barrier);
+
 		std::cout << "right rectangle died" << std::endl;
+
+		blue->objTexture = TextureManager::LoadTexture("../Assets/ptwo.png");
+
 		blueHealth = 100;
+
 	}
 
 

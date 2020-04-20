@@ -26,6 +26,7 @@ public:
 	// sends object to very far away coordinates off screen
 	void die();
 
+	SDL_Texture* objTexture;
 
 	int xpos, ypos;
 	int xvel, yvel;
@@ -38,7 +39,6 @@ protected:
 	int lastdir;
 
 	// the objects texture, and rendering Rectangles
-	SDL_Texture* objTexture;
 	SDL_Rect srcRect, destRect;
 
 };

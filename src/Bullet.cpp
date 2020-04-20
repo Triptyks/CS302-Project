@@ -72,7 +72,7 @@ void Bullet::Update()
 			// if a red bullet hits a red barrier, subtract from barrier health and remove bullet
 			if (player == "red")
 			{
-				x.takeDamage(34);
+				x.takeDamage(20);
 				xpos = 10000;
 				ypos = 10000;
 				//die();
@@ -80,7 +80,7 @@ void Bullet::Update()
 			// if a red bullet hits a blue barrier, remove bullet only
 			else
 			{
-				x.takeDamage(20);
+				x.takeDamage(10);
 				xpos = 10000;
 				ypos = 10000;
 				//die();
@@ -97,7 +97,7 @@ void Bullet::Update()
 			// if a blue bullet hits a red barrier, remove bullet only
 			if (player == "red")
 			{
-				x.takeDamage(20);
+				x.takeDamage(10);
 				xpos = 10000;
 				ypos = 10000;
 				//die();
@@ -105,7 +105,7 @@ void Bullet::Update()
 			// if a blue bullet hits a blue barrier, subtract from barrier health and remove bullet
 			else
 			{
-				x.takeDamage(34);
+				x.takeDamage(20);
 				xpos = 10000;
 				ypos = 10000;
 				//die();
