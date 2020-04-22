@@ -30,6 +30,8 @@ public:
 
 	int xpos, ypos;
 	int xvel, yvel;
+
+	SDL_Rect srcRect, destRect;
 protected:
 	// x position, y position, x velocity, y velocity
 
@@ -39,7 +41,7 @@ protected:
 	int lastdir;
 
 	// the objects texture, and rendering Rectangles
-	SDL_Rect srcRect, destRect;
+	
 
 };
 

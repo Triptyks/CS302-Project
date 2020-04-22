@@ -26,6 +26,7 @@ void Player::handleEvent(SDL_Event& e)
 			case SDLK_LEFT: xvel -= movevelocity; break;
 			case SDLK_RIGHT: xvel += movevelocity; break;
 			case SDLK_PERIOD: Shoot(); break;
+			case SDLK_SLASH: Game::spawnblue = true; break;
 			}
 
 			lastdir = velo;
@@ -58,6 +59,7 @@ void Player::handleEvent(SDL_Event& e)
 			case SDLK_a: xvel -= movevelocity; break;
 			case SDLK_d: xvel += movevelocity; break;
 			case SDLK_c: Shoot(); break;
+			case SDLK_v: Game::spawnred = true; break;
 			}
 		}
 		else if (e.type == SDL_KEYUP && e.key.repeat == 0)
@@ -157,12 +159,12 @@ void Player::Update()
 	}
 
 
-	if (Game::blueHealth == 0 && player == "blue")
+	if (Game::blueHealth == 0 && player == "blue" || Game::spawnblue == true && player == "blue")
 	{
 		reset();
 	}
 
-	if (Game::redHealth == 0 && player == "red")
+	if (Game::redHealth == 0 && player == "red" || Game::spawnred == true && player == "red")
 	{
 		reset();
 	}
@@ -226,6 +228,18 @@ void Player::Update()
 		Game::bluescore++;
 		std::cout << "Blue scored, blue now has " << Game::bluescore << " points. " << std::endl;
 	}
+
+	if (SDL_HasIntersection(&Game::redHit, &destRect) && player == "blue")
+	{
+		xpos -= xvel;
+	}
+
+	if (SDL_HasIntersection(&Game::blueHit, &destRect) && player == "red")
+	{
+		xpos -= xvel;
+	}
+
+
 }
 
 
@@ -293,3 +307,37 @@ void Player::reset()
 	}
 
 }
+
+
+
+
+void Player::Barrier()
+{
+
+	if (player == "red")
+	{
+
+		objTexture = TextureManager::LoadTexture("../Assets/ponebarrier.png");
+
+		Player barrier = *this;
+		Game::redbarriers.push_back(barrier);
+
+		objTexture = TextureManager::LoadTexture("../Assets/pone.png");
+		Game::redHealth = 100;
+	}
+
+	if (player == "blue")
+	{
+
+		objTexture = TextureManager::LoadTexture("../Assets/ptwobarrier.png");
+
+		Player barrier = *this;
+		Game::bluebarriers.push_back(barrier);
+
+		objTexture = TextureManager::LoadTexture("../Assets/ptwo.png");
+		Game::blueHealth = 100;
+	}
+
+
+}
+

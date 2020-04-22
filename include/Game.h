@@ -61,6 +61,9 @@ class Game
 		static GameObject* redbase;
 		static GameObject* bluebase;
 
+
+		static bool spawnred;
+		static bool spawnblue;
 	private:
 		// counts frames 
 		int counter = 0;

@@ -22,7 +22,7 @@ public:
 
 	// shoot is called to fire a bullet
 	void Shoot(); 
-
+	void Barrier();
 	// subtracts health by 25
 	void takeDamage(int dmg);
 

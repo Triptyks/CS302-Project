@@ -21,18 +21,10 @@ std::vector<Player> Game::bluebarriers;
 
 
 int Game::bluescore = 0;
-
 int Game::redscore = 0;
-//trying to mess with showing score
- 
 
-
-
-
-
-
-
-
+bool Game::spawnred = 0;
+bool Game::spawnblue = 0;
 
 
 // currently empty constructor
@@ -112,8 +104,9 @@ void Game::update()
 	red->Update();
 
 	// if red dies, spawn a barrier on its death location and push it to the vector of red barriers
-	if (redHealth == 0)
+	if (redHealth == 0 || spawnred == true)
 	{
+		
 		std::cout << "left rectangle died" << std::endl;
 
 		red->objTexture = TextureManager::LoadTexture("../Assets/ponebarrier.png");
@@ -123,15 +116,17 @@ void Game::update()
 
 		red->objTexture = TextureManager::LoadTexture("../Assets/pone.png");
 		redHealth = 100;
+
+
+		spawnred = false;
 	}
 
 	//update blue
 	blue->Update();
 
 	// if blue dies, spawn a barrier on its death location and push it to the vector of blue barriers
-	if (blueHealth == 0)
+	if (blueHealth == 0 || spawnblue == true)
 	{
-
 
 		blue->objTexture = TextureManager::LoadTexture("../Assets/ptwobarrier.png");
 
@@ -145,6 +140,7 @@ void Game::update()
 
 		blueHealth = 100;
 
+		spawnblue = false;
 	}
 
 
@@ -174,6 +170,9 @@ void Game::update()
 	blueflag->Update();
 	redflag->Update();
 
+
+	Game::redHit = red->getBox();
+	Game::blueHit = blue->getBox();
 	if (redscore == 5 || bluescore == 5)
 	{
 		

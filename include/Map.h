@@ -26,8 +26,13 @@ private:
 	SDL_Texture* tileblue;
 	SDL_Texture* tile2blue;
 
+	SDL_Texture* one;
+	SDL_Texture* two;
+	SDL_Texture* three;
+	SDL_Texture* four;
+	SDL_Texture* five;
 
-
+	SDL_Texture* score;
 	int map[20][25];
 
 };

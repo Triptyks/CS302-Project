@@ -38,6 +38,15 @@ Map::Map()
 	tile2blue = TextureManager::LoadTexture("../Assets/tile2blue.png");
 
 
+	one = TextureManager::LoadTexture("../Assets/one.png");
+	two = TextureManager::LoadTexture("../Assets/two.png");
+	three = TextureManager::LoadTexture("../Assets/three.png");
+	four = TextureManager::LoadTexture("../Assets/four.png");
+	five = TextureManager::LoadTexture("../Assets/five.png");
+
+	score = TextureManager::LoadTexture("../Assets/score.png");
+
+
 	LoadMap(lvl1);
 
 	src.x = 0;
@@ -196,8 +205,46 @@ void Map::DrawMap()
 					}
 				}
 
+
 				
 			}
+
+			if (row == 0 && col == 0)
+			{
+				
+				
+				
+				switch (Game::redscore)
+				{
+				case 1: TextureManager::Draw(one, src, dest); break;
+				case 2: TextureManager::Draw(two, src, dest); break;
+				case 3: TextureManager::Draw(three, src, dest); break;
+				case 4: TextureManager::Draw(four, src, dest); break;
+				case 5: TextureManager::Draw(five, src, dest); break;
+				default: break;
+
+					
+				}
+				
+			}
+
+			if (row == 0 && col == 24)
+			{
+			
+				
+				switch (Game::bluescore)
+				{
+				case 1: TextureManager::Draw(one, src, dest); break;
+				case 2: TextureManager::Draw(two, src, dest); break;
+				case 3: TextureManager::Draw(three, src, dest); break;
+				case 4: TextureManager::Draw(four, src, dest); break;
+				case 5: TextureManager::Draw(five, src, dest); break;
+				default: break;
+				
+				}
+				
+			}
+
 		}
 	}
 }
