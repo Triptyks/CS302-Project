@@ -78,7 +78,4 @@ class Game
 
 		// the window our Game renders to
 		SDL_Window* window;
-
-		
-
 };
