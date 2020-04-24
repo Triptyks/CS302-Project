@@ -23,14 +23,17 @@ public:
 	// shoot is called to fire a bullet
 	void Shoot(); 
 	void Barrier();
-	// subtracts health by 25
+
+	// subtracts health by iven amount
 	void takeDamage(int dmg);
 
 	// returns health
 	int getHealth();
 
-	// convert to private later
+	// whether has flag
 	bool hasFlag = false;
+
+	//player points
 	int points = 0;
 	
 	void reset();

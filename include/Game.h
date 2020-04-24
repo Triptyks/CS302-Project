@@ -55,19 +55,24 @@ class Game
 		static GameObject* redflag;
 		static GameObject* blueflag;
 
+		// tracks the score of each player
 		static int bluescore;
 		static int redscore;
 
+		// provides global access to the red and blue base
 		static GameObject* redbase;
 		static GameObject* bluebase;
 
-
+		// checks whether or not the player has chosen to die and spawn a barrier
 		static bool spawnred;
 		static bool spawnblue;
+
 	private:
 		// counts frames 
 		int counter = 0;
+
 		SDL_Texture* scorerender;
+
 		// whether or not the game is running, set to false to exit
 		int isRunning;
 

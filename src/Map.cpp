@@ -1,30 +1,7 @@
 #include "Map.h"
 #include "TextureManager.h"
 
-// array of tiles
-int lvl1[20][25] = {
-	{0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0},
-	{1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1},
-	{0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0},
-	{1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1},
-	{0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-};
-
+// contains textures for the background tiles
 Map::Map()
 {
 	tile = TextureManager::LoadTexture("../Assets/tile.png");
@@ -37,7 +14,6 @@ Map::Map()
 	tileblue = TextureManager::LoadTexture("../Assets/tileblue.png");
 	tile2blue = TextureManager::LoadTexture("../Assets/tile2blue.png");
 
-
 	one = TextureManager::LoadTexture("../Assets/one.png");
 	two = TextureManager::LoadTexture("../Assets/two.png");
 	three = TextureManager::LoadTexture("../Assets/three.png");
@@ -45,9 +21,6 @@ Map::Map()
 	five = TextureManager::LoadTexture("../Assets/five.png");
 
 	score = TextureManager::LoadTexture("../Assets/score.png");
-
-
-	LoadMap(lvl1);
 
 	src.x = 0;
 	src.y = 0;
@@ -64,23 +37,12 @@ Map::~Map()
 {
 }
 
-// load from array into map
-void Map::LoadMap(int arr[20][25])
-{
-	for (int row = 0; row < 20; row++)
-	{
-		for (int col = 0; col < 25; col++)
-		{
-			map[row][col] = arr[row][col];
-		}
-	}
-}
-
 // render each tile of our array 
 void Map::DrawMap()
 {
 	int type = 0;
 
+	// alternate tiles for good looking background
 	for (int row = 0; row < 20; row++)
 	{
 		for (int col = 0; col < 25; col++)
@@ -114,8 +76,7 @@ void Map::DrawMap()
 				}
 			}
 
-
-
+			// darker tiles in the middle
 			if (col > 9 && col < 15)
 			{
 				if (row % 2 == 0)
@@ -144,12 +105,11 @@ void Map::DrawMap()
 				}
 			}
 
+			// blue and red tiles to mark the spawns for each player
 			if (row > 6 && row < 12)
 			{
 				if (col < 5)
 				{
-
-
 					if (row % 2 == 0)
 					{
 						if (col % 2 == 0)
@@ -204,16 +164,11 @@ void Map::DrawMap()
 						}
 					}
 				}
-
-
-				
 			}
 
+			// show scores
 			if (row == 0 && col == 0)
 			{
-				
-				
-				
 				switch (Game::redscore)
 				{
 				case 1: TextureManager::Draw(one, src, dest); break;
@@ -221,17 +176,12 @@ void Map::DrawMap()
 				case 3: TextureManager::Draw(three, src, dest); break;
 				case 4: TextureManager::Draw(four, src, dest); break;
 				case 5: TextureManager::Draw(five, src, dest); break;
-				default: break;
-
-					
+				default: break;		
 				}
-				
 			}
 
 			if (row == 0 && col == 24)
-			{
-			
-				
+			{	
 				switch (Game::bluescore)
 				{
 				case 1: TextureManager::Draw(one, src, dest); break;
@@ -240,11 +190,8 @@ void Map::DrawMap()
 				case 4: TextureManager::Draw(four, src, dest); break;
 				case 5: TextureManager::Draw(five, src, dest); break;
 				default: break;
-				
-				}
-				
+				}	
 			}
-
 		}
 	}
 }

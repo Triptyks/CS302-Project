@@ -72,7 +72,7 @@ void GameObject::alive()
 	destRect.y = ypos;
 }
 
-
+// "kills" an object
 void GameObject::die()
 {
 	xpos = 10000;

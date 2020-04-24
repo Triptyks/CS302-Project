@@ -1,7 +1,7 @@
 #pragma once
 #include "Game.h"
 
-// might remove this class, not sure yet. should never need to be interacted with
+// class used to draw the background with modular tiles
 
 class Map
 {
@@ -9,8 +9,6 @@ public:
 
 	Map();
 	~Map();
-
-	void LoadMap(int arr[20][25]);
 
 	void DrawMap();
 
@@ -33,7 +31,6 @@ private:
 	SDL_Texture* five;
 
 	SDL_Texture* score;
-	int map[20][25];
 
 };
 

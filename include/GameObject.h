@@ -28,21 +28,20 @@ public:
 
 	SDL_Texture* objTexture;
 
+	// info about position
 	int xpos, ypos;
 	int xvel, yvel;
 
+	//rectangle for rendering / collision
 	SDL_Rect srcRect, destRect;
 protected:
-	// x position, y position, x velocity, y velocity
-
+	
+	// red or blue
 	std::string player;
 
+	// velocity and last faced direction
 	int velo;
 	int lastdir;
-
-	// the objects texture, and rendering Rectangles
-	
-
 };
 
 

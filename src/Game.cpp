@@ -117,7 +117,6 @@ void Game::update()
 		red->objTexture = TextureManager::LoadTexture("../Assets/pone.png");
 		redHealth = 100;
 
-
 		spawnred = false;
 	}
 
@@ -171,11 +170,13 @@ void Game::update()
 	redflag->Update();
 
 
+
 	Game::redHit = red->getBox();
 	Game::blueHit = blue->getBox();
+
+	// checking if the gamestate needs to be reset
 	if (redscore == 5 || bluescore == 5)
 	{
-		
 		red->reset();
 		blue->reset();
 
@@ -192,9 +193,7 @@ void Game::update()
 		{
 			x.die();
 		}
-
 	}
-
 }
 
 // render sets up other objects to be rendered , and then calls the render function of other objects

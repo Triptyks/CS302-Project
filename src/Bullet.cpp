@@ -27,9 +27,8 @@ void Bullet::Update()
 		}
 
 	}
+
 	ypos += 0;
-
-
 
 	// rectangle stuff
 	srcRect.h = 10;

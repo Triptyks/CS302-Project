@@ -118,22 +118,19 @@ void Player::Update()
 	// position change from input and SDL_Rect stuff
 	xpos += xvel;
 
-	//If the dot went too far to the left or right
+	// checking for out of bounds
 	if ((xpos < 0) || (xpos + 10 > 800))
 	{
-		//Move back
+		
 		xpos -= xvel;
 	}
 
-
-
-
 	ypos += yvel;
 
-	//If the dot went too far to the left or right
+	// checking for out of bounds
 	if ((ypos < 0) || (ypos + 125 > 600))
 	{
-		//Move back
+		
 		ypos -= yvel;
 	}
 
@@ -158,7 +155,7 @@ void Player::Update()
 		Game::redHit = destRect;
 	}
 
-
+	// if a player dies, reset their state
 	if (Game::blueHealth == 0 && player == "blue" || Game::spawnblue == true && player == "blue")
 	{
 		reset();
@@ -199,7 +196,7 @@ void Player::Update()
 		hasFlag = true;
 	}
 
-	// if red caps the blue flag, respawn blue flag, set original texture, and increment poitns
+	// if red caps the blue flag, respawn blue flag, set original texture, and increment points
 	if (SDL_HasIntersection(&Game::redbase->getBox(), &destRect) && player == "red" && hasFlag == true)
 	{
 		Game::blueflag->alive();
@@ -238,10 +235,7 @@ void Player::Update()
 	{
 		xpos -= xvel;
 	}
-
-
 }
-
 
 void Player::Render()
 {
@@ -270,7 +264,6 @@ int Player::getHealth()
 {
 	return health;
 }
-
 
 void Player::reset()
 {
@@ -308,9 +301,7 @@ void Player::reset()
 
 }
 
-
-
-
+// function for turning a player into a barrier and resetting the player
 void Player::Barrier()
 {
 
@@ -340,4 +331,3 @@ void Player::Barrier()
 
 
 }
-
